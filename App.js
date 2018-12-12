@@ -21,7 +21,12 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      fname: ''
+      fname: '',
+      lname: '',
+      phone: '',
+      email: '',
+      zip: '',
+      dob: ''
     };
   }
   render() {
@@ -32,13 +37,69 @@ export default class App extends Component<Props> {
         </View>
         <Text style={styles.subHeader}>LET'S TAKE THE FIRST STEPS!</Text>
         <View style={styles.container}>
-          <View >
-            <Text>FIRST NAME*</Text>
+          <View style={styles.formContainer}>
+            <View style={styles.formItemD}>
+              <Text>FIRST NAME*</Text>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={(fname) => this.setState({fname})}
+                value={this.state.fname}
+              />
+            </View>
+            <View style={styles.formItemD}>
+              <Text>LAST NAME*</Text>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={(lname) => this.setState({lname})}
+                value={this.state.lname}
+              />
+            </View>
+            <View style={styles.formItemD}>
+              <Text>PHONE NUMBER*</Text>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={(phone) => this.setState({phone})}
+                value={this.state.phone}
+              />
+            </View>
+            <View style={styles.formItemD}>
+              <Text>EMAIL*</Text>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
+              />
+            </View>
+            <View style={styles.formItemS}>
+              <Text>ZIP CODE*</Text>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
+              />
+            </View>
+            <View style={styles.formItemS}>
+              <Text>DATE OF BIRTH*</Text>
+              <TextInput
+                style={styles.inputText}
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
+              />
+            </View>
+          </View>
+
+          <View style={styles.formItemS}>
+            <Text>DATE OF BIRTH*</Text>
             <TextInput
               style={styles.inputText}
-              onChangeText={(fname) => this.setState({text})}
-              value={this.state.text}
+              onChangeText={(email) => this.setState({email})}
+              value={this.state.email}
             />
+          </View>
+
+
+          <View style={styles.formContainer}>
+
           </View>
           <Text style={styles.welcome}>Welcome to React Native!</Text>
           <Text style={styles.instructions}>To get started, edit App.js</Text>
@@ -71,9 +132,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF'
   },
+  formContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  formItemD: {
+    width: '50%',
+    padding: 10
+  },
+  formItemS: {
+    width: '100%',
+    padding: 10
+  },
   inputText: {
     borderColor: 'steelblue',
-    borderWidth: 1
+    borderWidth: 1,
+    height: 30
   },
   welcome: {
     fontSize: 20,
