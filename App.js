@@ -8,6 +8,7 @@
 
 import React, {Component} from 'react';
 import {TextInput, Image, Platform, StyleSheet, Text, View} from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -26,7 +27,8 @@ export default class App extends Component<Props> {
       phone: '',
       email: '',
       zip: '',
-      dob: ''
+      dob: '',
+      text: ''
     };
   }
   render() {
@@ -36,6 +38,11 @@ export default class App extends Component<Props> {
           <Image style={styles.image} source={require('./white-ang-logo.png')} />
         </View>
         <Text style={styles.subHeader}>LET'S TAKE THE FIRST STEPS!</Text>
+        <FormLabel>Name</FormLabel>
+        <FormInput onChangeText={(fname) => this.setState({fname})}
+        value={this.state.fname} />
+        <FormValidationMessage>Error message</FormValidationMessage>
+
         <View style={styles.container}>
           <View style={styles.formContainer}>
             <View style={styles.formItemD}>
