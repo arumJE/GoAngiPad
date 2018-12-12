@@ -38,14 +38,15 @@ export default class App extends Component<Props> {
           <Image style={styles.image} source={require('./white-ang-logo.png')} />
         </View>
         <Text style={styles.subHeader}>LET'S TAKE THE FIRST STEPS!</Text>
-        <FormLabel>Name</FormLabel>
-        <FormInput onChangeText={(fname) => this.setState({fname})}
-        value={this.state.fname} />
-        <FormValidationMessage>Error message</FormValidationMessage>
+
 
         <View style={styles.container}>
           <View style={styles.formContainer}>
             <View style={styles.formItemD}>
+              <FormLabel>Name</FormLabel>
+              <FormInput style={styles.inputText} onChangeText={(fname) => this.setState({fname})}
+              value={this.state.fname} />
+              <FormValidationMessage>Error message</FormValidationMessage>
               <Text>FIRST NAME*</Text>
               <TextInput
                 style={styles.inputText}
