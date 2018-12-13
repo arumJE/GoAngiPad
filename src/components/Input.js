@@ -7,9 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import { DatePickerIOS, Picker, TextInput, Image, Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Button, FormLabel, FormInput, FormValidationMessage, CheckBox } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {TextInput, Image, Platform, StyleSheet, Text, View} from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage, CheckBox } from 'react-native-elements';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -28,19 +27,8 @@ export default class Input extends Component {
       email: '',
       zip: '',
       dob: '',
-      text: '',
-      activeBgColor: 'steelblue',
-      inactiveBgColor: 'white',
-      status: 'Please select one',
-      chosenDate: new Date(),
-      checked: false
+      text: ''
     };
-
-    this.setDate = this.setDate.bind(this);
-  }
-
-  setDate(newDate) {
-    this.setState({chosenDate: newDate})
   }
   render() {
     return (
@@ -52,6 +40,10 @@ export default class Input extends Component {
         <View style={styles.container}>
           <View style={styles.formContainer}>
             <View style={styles.formItemD}>
+              <FormLabel>Name</FormLabel>
+              <FormInput style={styles.inputText} onChangeText={(fname) => this.setState({fname})}
+              value={this.state.fname} />
+              <FormValidationMessage>Error message</FormValidationMessage>
               <Text>FIRST NAME*</Text>
               <TextInput
                 style={styles.inputText}
@@ -63,7 +55,6 @@ export default class Input extends Component {
               <Text>LAST NAME*</Text>
               <TextInput
                 style={styles.inputText}
-                selectedValue={this.state.status}
                 onChangeText={(lname) => this.setState({lname})}
                 value={this.state.lname}
               />
@@ -88,51 +79,30 @@ export default class Input extends Component {
               <Text>ZIP CODE*</Text>
               <TextInput
                 style={styles.inputText}
-                onChangeText={(zip) => this.setState({zip})}
-                value={this.state.zip}
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
               />
             </View>
             <View style={styles.formItemS}>
               <Text>DATE OF BIRTH*</Text>
               <TextInput
                 style={styles.inputText}
-                onChangeText={(dob) => this.setState({dob})}
-                value={this.state.dob}
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
               />
             </View>
-            <View style={styles.formItemS}>
-              <Text>ARE YOU CURRENTLY OR HAVE YOU EVER BEEN IN THE MILITARY?</Text>
-              <View style={styles.formItemC}>
-                <CheckBox
-                  center
-                  style={{backgroundColor: '#eaeaea'}}
-                  checked={this.state.checked}
-                  onPress={() => this.setState({
-                    checked: !this.state.checked
-                    })
-                  }
-                />
-              </View>
-            </View>
-            <View style={styles.formItemS}>
-              <View>
-                <Text>WHAT IS YOUR CITIZENSHIP STATUS?</Text>
-                <Picker
-                  style={styles.pickerStyle}
-                  selectedValue={this.state.status}
-                  style={{ height: 50, width: 100 }}
-                  onValueChange={(itemValue, itemIndex) => this.setState({status: itemValue})}>
-                  <Picker.Item label="Birthright Citizen" value="birth" />
-                  <Picker.Item label="Naturalized Citizen" value="naturalized" />
-                  <Picker.Item label="Dual Citizen" value="dual" />
-                  <Picker.Item label="Non-Citizen" value="non" />
-                </Picker>
-              </View>
-            </View>
-            <View style={styles.formItemS}>
-              <Text>HOW WOULD YOU LIKE TO BE CONTACTED?</Text>
-            </View>
           </View>
+
+          <View style={styles.formItemS}>
+          </View>
+
+
+          <View style={styles.formContainer}>
+
+          </View>
+          <Text style={styles.welcome}>Welcome to React Native!</Text>
+          <Text style={styles.instructions}>To get started, edit App.js</Text>
+          <Text style={styles.instructions}>{instructions}</Text>
         </View>
       </View>
     );
@@ -159,8 +129,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
-    margin: 10
+    backgroundColor: '#F5FCFF'
   },
   formContainer: {
     flexDirection: 'row',
@@ -174,34 +143,10 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10
   },
-  formItemC: {
-    width: 100,
-  },
   inputText: {
     borderColor: 'steelblue',
     borderWidth: 1,
-    height: 50
-  },
-  checkbox: {
-    width: 20
-  },
-  datePick: {
-
-  },
-  pickerStyle: {
-    position: 'absolute',
-    borderWidth: 1,
-    borderColor: 'steelblue'
-  },
-  buttonRow: {
-    flexDirection: 'row',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 10,
-    width: 50,
-    borderColor: 'steelblue'
+    height: 30
   },
   welcome: {
     fontSize: 20,
