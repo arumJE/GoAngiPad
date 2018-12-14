@@ -7,9 +7,11 @@
  */
 
 import React, {Component} from 'react';
-import { DatePickerIOS, Picker, TextInput, Image, Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Button, FormLabel, FormInput, FormValidationMessage, CheckBox } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { TabBarIOS, DatePickerIOS, Picker, TextInput, Image, Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Button, ButtonGroup, Icon, FormLabel, FormInput, FormValidationMessage, CheckBox } from 'react-native-elements';
+import { Dropdown } from 'react-native-material-dropdown';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -33,16 +35,59 @@ export default class Input extends Component {
       inactiveBgColor: 'white',
       status: 'Please select one',
       chosenDate: new Date(),
-      checked: false
+      checked: false,
+      selectedIndex: 0,
+      selectedIndexTwo: 0,
+      isDateTimePickerVisible: false
     };
 
-    this.setDate = this.setDate.bind(this);
+    this.updateIndex = this.updateIndex.bind(this);
+    this.updateIndexTwo = this.updateIndexTwo.bind(this);
   }
 
-  setDate(newDate) {
-    this.setState({chosenDate: newDate})
+  _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+  _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+  _handleDatePicked = (date) => {
+    this.setState({chosenDate: ''});
+    this.setState({dob: ''});
+    console.log('A date has been picked: ', date);
+    let dateString = moment(Date(date)).format('DD-MM-YYYY');
+    this.setState({chosenDate: dateString});
+    this.setState({dob: dateString});
+    this._hideDateTimePicker();
+  };
+
+  updateIndex (selectedIndex) {
+    this.setState({selectedIndex})
   }
+
+  updateIndexTwo (selectedIndexTwo) {
+    this.setState({selectedIndexTwo})
+  }
+
   render() {
+    const buttons = ['YES', 'NO'];
+    const { selectedIndex } = this.state;
+
+    const buttonsTwo = ['EMAIL', 'CALL', 'TEXT', 'OPT OUT'];
+    const { selectedIndexTwo } = this.state;
+
+    let data = [
+    {
+      value: 'Birth',
+    },
+    {
+      value: 'Naturalized',
+    },
+    {
+      value: 'Dual',
+    },
+    {
+      value: 'Non',
+    }];
+
+
     return (
       <View style={styles.wrapper}>
         <View style={styles.imageContainer}>
@@ -74,6 +119,7 @@ export default class Input extends Component {
                 style={styles.inputText}
                 onChangeText={(phone) => this.setState({phone})}
                 value={this.state.phone}
+                placeholder="(###) ###-####"
               />
             </View>
             <View style={styles.formItemD}>
@@ -94,45 +140,66 @@ export default class Input extends Component {
             </View>
             <View style={styles.formItemS}>
               <Text>DATE OF BIRTH*</Text>
+              <View >
+                <TouchableOpacity onPress={this._showDateTimePicker}>
+                  <Text>Show DatePicker</Text>
+                </TouchableOpacity>
+                <DateTimePicker
+                  isVisible={this.state.isDateTimePickerVisible}
+                  onConfirm={this._handleDatePicked}
+                  onCancel={this._hideDateTimePicker}
+                />
+              </View>
               <TextInput
                 style={styles.inputText}
                 onChangeText={(dob) => this.setState({dob})}
-                value={this.state.dob}
+                placeholder={this.state.dob}
               />
             </View>
             <View style={styles.formItemS}>
               <Text>ARE YOU CURRENTLY OR HAVE YOU EVER BEEN IN THE MILITARY?</Text>
               <View style={styles.formItemC}>
-                <CheckBox
-                  center
-                  style={{backgroundColor: '#eaeaea'}}
-                  checked={this.state.checked}
-                  onPress={() => this.setState({
-                    checked: !this.state.checked
-                    })
-                  }
+                <ButtonGroup
+                  style={styles.buttongroupTwo}
+                  onPress={this.updateIndex}
+                  selectedIndex={selectedIndex}
+                  buttons={buttons}
+                  containerStyle={{height: 50, borderRadius: 50}}
                 />
               </View>
             </View>
             <View style={styles.formItemS}>
-              <View>
-                <Text>WHAT IS YOUR CITIZENSHIP STATUS?</Text>
-                <Picker
-                  style={styles.pickerStyle}
-                  selectedValue={this.state.status}
-                  style={{ height: 50, width: 100 }}
-                  onValueChange={(itemValue, itemIndex) => this.setState({status: itemValue})}>
-                  <Picker.Item label="Birthright Citizen" value="birth" />
-                  <Picker.Item label="Naturalized Citizen" value="naturalized" />
-                  <Picker.Item label="Dual Citizen" value="dual" />
-                  <Picker.Item label="Non-Citizen" value="non" />
-                </Picker>
-              </View>
+              <Text>WHAT IS YOUR CITIZENSHIP STATUS?*</Text>
+              <Dropdown
+                data={data}
+                selectedItemColor='steelblue'
+                containerStyle={{borderColor: 'steelblue', borderWidth: 0, height: 50,}}
+              />
             </View>
             <View style={styles.formItemS}>
-              <Text>HOW WOULD YOU LIKE TO BE CONTACTED?</Text>
+              <Text>HOW WOULD YOU LIKE TO BE CONTACTED BY AN AIR NATIONAL GUARD RECRUITER?</Text>
+              <View style={styles.formItemC}>
+                <ButtonGroup
+                  style={styles.buttongroupTwo}
+                  onPress={this.updateIndexTwo}
+                  selectedIndex={selectedIndexTwo}
+                  buttons={buttonsTwo}
+                  containerStyle={{height: 50, borderRadius: 50}}
+                />
+              </View>
             </View>
           </View>
+        </View>
+        <View style={styles.submitContainer}>
+          <Button
+            title="SUBMIT"
+            color="white"
+            backgroundColor='steelblue'
+            style={styles.submit}
+          />
+        </View>
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>PRIVACY POLICY | TERMS OF USE</Text>
         </View>
       </View>
     );
@@ -159,7 +226,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
     margin: 10
   },
   formContainer: {
@@ -168,14 +235,20 @@ const styles = StyleSheet.create({
   },
   formItemD: {
     width: '50%',
-    padding: 10
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 20,
+    paddingBottom: 20
   },
   formItemS: {
     width: '100%',
-    padding: 10
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 20,
+    paddingBottom: 20
   },
   formItemC: {
-    width: 100,
+    width: '100%',
   },
   inputText: {
     borderColor: 'steelblue',
@@ -189,12 +262,17 @@ const styles = StyleSheet.create({
 
   },
   pickerStyle: {
-    position: 'absolute',
-    borderWidth: 1,
-    borderColor: 'steelblue'
+
   },
   buttonRow: {
     flexDirection: 'row',
+  },
+  buttongroup: {
+    height: 50,
+    borderRadius: 50
+  },
+  buttongroupTwo: {
+    height: 50,
   },
   button: {
     alignItems: 'center',
@@ -203,10 +281,28 @@ const styles = StyleSheet.create({
     width: 50,
     borderColor: 'steelblue'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  buttonTwo: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 10,
+    width: '100%',
+    borderColor: 'steelblue'
+  },
+  submitContainer: {
+    alignItems: 'center',
+    marginBottom: 40
+  },
+  submit: {
+    width: 175,
+  },
+  footerContainer: {
+    alignItems: 'center',
+    backgroundColor: 'steelblue'
+  },
+  footerText: {
+    color: 'white',
+    marginTop: 5,
+    marginBottom: 5
   },
   instructions: {
     textAlign: 'center',
